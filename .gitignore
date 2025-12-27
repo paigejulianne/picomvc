@@ -33,6 +33,8 @@ Thumbs.db
 
 # Example app runtime files
 /example/cache/
+/example-blade/cache/
+/example-smarty/cache/
 
 # Build artifacts
 *.phar

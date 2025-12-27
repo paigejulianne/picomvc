@@ -48,6 +48,48 @@ require_once 'PicoMVC.php';
 
 ---
 
+## Examples
+
+PicoMVC includes three example applications demonstrating each template engine:
+
+| Example | Template Engine | Directory |
+|---------|-----------------|-----------|
+| PHP (Native) | Native PHP | `example/` |
+| Blade | Laravel Blade | `example-blade/` |
+| Smarty | Smarty | `example-smarty/` |
+
+### Running the Examples
+
+1. **Install dependencies:**
+   ```bash
+   composer install
+   ```
+
+2. **For Blade example, also install:**
+   ```bash
+   composer require jenssegers/blade
+   ```
+
+3. **For Smarty example, also install:**
+   ```bash
+   composer require smarty/smarty
+   ```
+
+4. **Set file permissions:**
+   ```bash
+   chmod 644 example*/.htaccess
+   chmod 755 example*/cache
+   ```
+
+5. **Access in your browser:**
+   - PHP: `http://localhost/path/to/picomvc/example/`
+   - Blade: `http://localhost/path/to/picomvc/example-blade/`
+   - Smarty: `http://localhost/path/to/picomvc/example-smarty/`
+
+> **Note:** Ensure Apache `mod_rewrite` is enabled and `AllowOverride All` is set for your directory. See [Apache Configuration](#apache-configuration) for details.
+
+---
+
 ## Quick Start
 
 ### 1. Create Your Entry Point

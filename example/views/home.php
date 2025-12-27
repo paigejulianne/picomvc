@@ -1,4 +1,7 @@
-<?php ob_start(); ?>
+<?php
+$baseUrl = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+ob_start();
+?>
 
 <h1><?= htmlspecialchars($title) ?></h1>
 

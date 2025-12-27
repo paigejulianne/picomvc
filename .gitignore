@@ -1,0 +1,38 @@
+# Composer
+/vendor/
+composer.lock
+
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Cache and logs
+/cache/
+*.log
+
+# Environment and local config
+.env
+.env.local
+.env.*.local
+
+# PHPUnit
+/coverage/
+.phpunit.result.cache
+.phpunit.cache/
+
+# Example app runtime files
+/example/cache/
+
+# Build artifacts
+*.phar

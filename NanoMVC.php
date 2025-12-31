@@ -1,16 +1,16 @@
 <?php
 
-namespace PaigeJulianne\PicoMVC;
+namespace PaigeJulianne\NanoMVC;
 
 /**
- * Package PicoMVC
+ * Package NanoMVC
  *
  * A lightweight MVC framework for PHP 8.0+ with support for Blade and Smarty templates.
  *
  * @author    Paige Julianne Sullivan <paige@paigejulianne.com> https://paigejulianne.com
  * @copyright 2024-present Paige Julianne Sullivan
  * @license   GPL-3.0-or-later
- * @link      https://github.com/paigejulianne/picomvc
+ * @link      https://github.com/paigejulianne/nanomvc
  * @version   1.0.0
  */
 
@@ -937,7 +937,7 @@ class View
     public static function configure(string $viewsPath, string $cachePath = '', string $engine = 'php'): void
     {
         self::$viewsPath = rtrim($viewsPath, '/');
-        self::$cachePath = $cachePath ? rtrim($cachePath, '/') : sys_get_temp_dir() . '/picomvc_cache';
+        self::$cachePath = $cachePath ? rtrim($cachePath, '/') : sys_get_temp_dir() . '/nanomvc_cache';
         self::$engine = strtolower($engine);
         self::$adapter = null; // Reset adapter to force re-initialization
     }

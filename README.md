@@ -1,11 +1,11 @@
-# PicoMVC
+# NanoMVC
 
 A lightweight MVC framework for PHP 8.0+ with support for Blade and Smarty templates.
 
 **Version 1.0.0** | [Changelog](CHANGELOG.md) | [License: GPL-3.0](LICENSE)
 
 by Paige Julianne Sullivan
-[paigejulianne.com](https://paigejulianne.com) | [GitHub](https://github.com/paigejulianne/picomvc)
+[paigejulianne.com](https://paigejulianne.com) | [GitHub](https://github.com/paigejulianne/nanomvc)
 
 ---
 
@@ -35,22 +35,22 @@ by Paige Julianne Sullivan
 ### Via Composer (Recommended)
 
 ```bash
-composer require paigejulianne/picomvc
+composer require paigejulianne/nanomvc
 ```
 
 ### Manual Installation
 
-Download `PicoMVC.php` and include it in your project:
+Download `NanoMVC.php` and include it in your project:
 
 ```php
-require_once 'PicoMVC.php';
+require_once 'NanoMVC.php';
 ```
 
 ---
 
 ## Examples
 
-PicoMVC includes three example applications demonstrating each template engine:
+NanoMVC includes three example applications demonstrating each template engine:
 
 | Example | Template Engine | Directory |
 |---------|-----------------|-----------|
@@ -82,9 +82,9 @@ PicoMVC includes three example applications demonstrating each template engine:
    ```
 
 5. **Access in your browser:**
-   - PHP: `http://localhost/path/to/picomvc/example/`
-   - Blade: `http://localhost/path/to/picomvc/example-blade/`
-   - Smarty: `http://localhost/path/to/picomvc/example-smarty/`
+   - PHP: `http://localhost/path/to/nanomvc/example/`
+   - Blade: `http://localhost/path/to/nanomvc/example-blade/`
+   - Smarty: `http://localhost/path/to/nanomvc/example-smarty/`
 
 > **Note:** Ensure Apache `mod_rewrite` is enabled and `AllowOverride All` is set for your directory. See [Apache Configuration](#apache-configuration) for details.
 
@@ -100,7 +100,7 @@ Create `index.php`:
 <?php
 require_once 'vendor/autoload.php';
 
-use PaigeJulianne\PicoMVC\App;
+use PaigeJulianne\NanoMVC\App;
 
 App::run(__DIR__);
 ```
@@ -125,7 +125,7 @@ Create `routes.php`:
 
 ```php
 <?php
-use PaigeJulianne\PicoMVC\Router;
+use PaigeJulianne\NanoMVC\Router;
 
 Router::get('/', [HomeController::class, 'index']);
 Router::get('/users/{id}', [UsersController::class, 'show']);
@@ -138,9 +138,9 @@ Create `controllers/HomeController.php`:
 
 ```php
 <?php
-use PaigeJulianne\PicoMVC\Controller;
-use PaigeJulianne\PicoMVC\Request;
-use PaigeJulianne\PicoMVC\Response;
+use PaigeJulianne\NanoMVC\Controller;
+use PaigeJulianne\NanoMVC\Request;
+use PaigeJulianne\NanoMVC\Response;
 
 class HomeController extends Controller
 {
@@ -193,8 +193,8 @@ file=routes.php
 ### Programmatic Configuration
 
 ```php
-use PaigeJulianne\PicoMVC\App;
-use PaigeJulianne\PicoMVC\View;
+use PaigeJulianne\NanoMVC\App;
+use PaigeJulianne\NanoMVC\View;
 
 App::setDebug(true);
 App::setConfig('app.name', 'My App');
@@ -208,7 +208,7 @@ View::configure('/path/to/views', '/path/to/cache', 'blade');
 ### Basic Routes
 
 ```php
-use PaigeJulianne\PicoMVC\Router;
+use PaigeJulianne\NanoMVC\Router;
 
 Router::get('/path', $handler);
 Router::post('/path', $handler);
@@ -310,9 +310,9 @@ Router::setErrorHandler(function (\Throwable $e, Request $request) {
 Extend the base `Controller` class:
 
 ```php
-use PaigeJulianne\PicoMVC\Controller;
-use PaigeJulianne\PicoMVC\Request;
-use PaigeJulianne\PicoMVC\Response;
+use PaigeJulianne\NanoMVC\Controller;
+use PaigeJulianne\NanoMVC\Request;
+use PaigeJulianne\NanoMVC\Response;
 
 class UsersController extends Controller
 {
@@ -440,7 +440,7 @@ $request->json();        // JSON decoded body
 ### Creating Responses
 
 ```php
-use PaigeJulianne\PicoMVC\Response;
+use PaigeJulianne\NanoMVC\Response;
 
 // JSON
 $response = Response::json(['data' => 'value'], 200);
@@ -676,7 +676,7 @@ sudo systemctl restart apache2
 
 ### Apache User Directories (~username)
 
-If running PicoMVC in a user directory (e.g., `http://localhost/~username/myapp/`), you need to configure Apache to allow `.htaccess` overrides.
+If running NanoMVC in a user directory (e.g., `http://localhost/~username/myapp/`), you need to configure Apache to allow `.htaccess` overrides.
 
 Edit `/etc/apache2/mods-available/userdir.conf`:
 
@@ -696,7 +696,7 @@ sudo systemctl restart apache2
 
 ### Subdirectory Installation
 
-PicoMVC automatically detects when installed in a subdirectory and adjusts routing accordingly. For links in your views, calculate the base URL:
+NanoMVC automatically detects when installed in a subdirectory and adjusts routing accordingly. For links in your views, calculate the base URL:
 
 ```php
 <?php $baseUrl = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'); ?>
@@ -862,7 +862,7 @@ path=views
 cache=cache
 ```
 
-PicoMVC automatically resolves relative paths against the application's base directory.
+NanoMVC automatically resolves relative paths against the application's base directory.
 
 ### Links Not Working in Subdirectory
 
@@ -887,6 +887,6 @@ Contributions are welcome! Please:
 
 ## License
 
-PicoMVC is released under the [GPL-3.0-or-later](LICENSE) license.
+NanoMVC is released under the [GPL-3.0-or-later](LICENSE) license.
 
 Copyright 2024-present Paige Julianne Sullivan

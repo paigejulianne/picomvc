@@ -1,8 +1,8 @@
 <?php
 
-use PaigeJulianne\PicoMVC\Controller;
-use PaigeJulianne\PicoMVC\Request;
-use PaigeJulianne\PicoMVC\Response;
+use PaigeJulianne\NanoMVC\Controller;
+use PaigeJulianne\NanoMVC\Request;
+use PaigeJulianne\NanoMVC\Response;
 
 class UsersController extends Controller
 {

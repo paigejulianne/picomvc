@@ -7,7 +7,7 @@ ob_start();
 
 <div class="card">
     <h2><?= htmlspecialchars($message) ?></h2>
-    <p>PicoMVC is a minimal MVC framework designed with the same simplicity as PicoORM.</p>
+    <p>NanoMVC is a minimal MVC framework designed with the same simplicity as PicoORM.</p>
 
     <h3>Features</h3>
     <ul>

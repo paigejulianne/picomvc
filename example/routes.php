@@ -1,12 +1,12 @@
 <?php
 
 /**
- * PicoMVC Routes
+ * NanoMVC Routes
  *
  * Define your application routes here.
  */
 
-use PaigeJulianne\PicoMVC\Router;
+use PaigeJulianne\NanoMVC\Router;
 
 // Include controllers
 require_once __DIR__ . '/controllers/HomeController.php';
@@ -31,5 +31,5 @@ Router::group(['prefix' => 'api'], function () {
 
 // Custom 404 handler
 Router::setNotFoundHandler(function () {
-    return \PaigeJulianne\PicoMVC\View::make('errors.404', [], 404);
+    return \PaigeJulianne\NanoMVC\View::make('errors.404', [], 404);
 });

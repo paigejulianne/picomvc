@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use PaigeJulianne\PicoMVC\App;
+use PaigeJulianne\NanoMVC\App;
 
 class AppTest extends TestCase
 {

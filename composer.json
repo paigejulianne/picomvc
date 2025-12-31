@@ -1,7 +1,7 @@
 {
-  "name": "paigejulianne/picomvc",
+  "name": "paigejulianne/nanomvc",
   "type": "library",
-  "description": "PicoMVC: a lightweight MVC framework with Blade and Smarty template support",
+  "description": "NanoMVC: a lightweight MVC framework with Blade and Smarty template support",
   "keywords": [
     "mvc",
     "framework",
@@ -13,7 +13,7 @@
   ],
   "version": "1.0.0",
   "license": "GPL-3.0-or-later",
-  "homepage": "https://github.com/paigejulianne/picomvc",
+  "homepage": "https://github.com/paigejulianne/nanomvc",
   "authors": [
     {
       "name": "Paige Julianne Sullivan",
@@ -34,7 +34,7 @@
   },
   "autoload": {
     "files": [
-      "PicoMVC.php"
+      "NanoMVC.php"
     ]
   },
   "autoload-dev": {

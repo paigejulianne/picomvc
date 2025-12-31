@@ -5,7 +5,7 @@
 
 <div class="card">
     <h2>About This Example</h2>
-    <p>This example shows how to use PicoMVC with Laravel's Blade templating engine.</p>
+    <p>This example shows how to use NanoMVC with Laravel's Blade templating engine.</p>
 
     <h3 style="margin-top: 1.5rem;">Installation</h3>
     <p>To use Blade templates, install the jenssegers/blade package:</p>

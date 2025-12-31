@@ -1,15 +1,15 @@
 <?php
 
-use PaigeJulianne\PicoMVC\Controller;
-use PaigeJulianne\PicoMVC\Request;
-use PaigeJulianne\PicoMVC\Response;
+use PaigeJulianne\NanoMVC\Controller;
+use PaigeJulianne\NanoMVC\Request;
+use PaigeJulianne\NanoMVC\Response;
 
 class HomeController extends Controller
 {
     public function index(Request $request): Response
     {
         return $this->view('home', [
-            'title' => 'Welcome to PicoMVC',
+            'title' => 'Welcome to NanoMVC',
             'message' => 'Smarty Templating Example',
             'baseUrl' => rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'),
         ]);

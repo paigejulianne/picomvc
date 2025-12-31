@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($title ?? 'PicoMVC') ?></title>
+    <title><?= htmlspecialchars($title ?? 'NanoMVC') ?></title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
@@ -29,7 +29,7 @@
 <body>
     <header>
         <div class="container">
-            <h1>PicoMVC</h1>
+            <h1>NanoMVC</h1>
             <nav>
                 <a href="<?= $baseUrl ?>/">Home</a>
                 <a href="<?= $baseUrl ?>/users">Users</a>
@@ -46,7 +46,7 @@
 
     <footer>
         <div class="container">
-            <p>PicoMVC &copy; <?= date('Y') ?> - A lightweight MVC framework</p>
+            <p>NanoMVC &copy; <?= date('Y') ?> - A lightweight MVC framework</p>
         </div>
     </footer>
 </body>

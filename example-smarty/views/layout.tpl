@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{$title|default:'PicoMVC Smarty'}</title>
+    <title>{$title|default:'NanoMVC Smarty'}</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
@@ -27,7 +27,7 @@
 <body>
     <header>
         <div class="container">
-            <h1>PicoMVC <span class="badge">Smarty</span></h1>
+            <h1>NanoMVC <span class="badge">Smarty</span></h1>
             <nav>
                 <a href="{$baseUrl}/">Home</a>
                 <a href="{$baseUrl}/users">Users</a>
@@ -44,7 +44,7 @@
 
     <footer>
         <div class="container">
-            <p>PicoMVC Smarty Example &copy; {$smarty.now|date_format:"%Y"}</p>
+            <p>NanoMVC Smarty Example &copy; {$smarty.now|date_format:"%Y"}</p>
         </div>
     </footer>
 </body>

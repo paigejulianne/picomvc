@@ -1,9 +1,9 @@
 <?php
 
-use PaigeJulianne\PicoMVC\Controller;
-use PaigeJulianne\PicoMVC\Request;
-use PaigeJulianne\PicoMVC\Response;
-use PaigeJulianne\PicoMVC\ValidationException;
+use PaigeJulianne\NanoMVC\Controller;
+use PaigeJulianne\NanoMVC\Request;
+use PaigeJulianne\NanoMVC\Response;
+use PaigeJulianne\NanoMVC\ValidationException;
 
 class UsersController extends Controller
 {

@@ -1,9 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use PaigeJulianne\PicoMVC\View;
-use PaigeJulianne\PicoMVC\Response;
-use PaigeJulianne\PicoMVC\PhpAdapter;
+use PaigeJulianne\NanoMVC\View;
+use PaigeJulianne\NanoMVC\Response;
+use PaigeJulianne\NanoMVC\PhpAdapter;
 
 class ViewTest extends TestCase
 {
@@ -40,7 +40,7 @@ class ViewTest extends TestCase
         );
 
         // Configure the view system
-        View::configure($this->testViewsPath, sys_get_temp_dir() . '/picomvc_test_cache', 'php');
+        View::configure($this->testViewsPath, sys_get_temp_dir() . '/nanomvc_test_cache', 'php');
     }
 
     protected function tearDown(): void
@@ -72,8 +72,8 @@ class ViewTest extends TestCase
 
     public function testRenderNestedView(): void
     {
-        $result = View::render('pages.home', ['title' => 'PicoMVC']);
-        $this->assertEquals('Welcome to PicoMVC', $result);
+        $result = View::render('pages.home', ['title' => 'NanoMVC']);
+        $this->assertEquals('Welcome to NanoMVC', $result);
     }
 
     public function testShareDataWithAllViews(): void

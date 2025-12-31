@@ -5,7 +5,7 @@
 
 <div class="card">
     <h2>About This Example</h2>
-    <p>This example shows how to use PicoMVC with the Smarty templating engine.</p>
+    <p>This example shows how to use NanoMVC with the Smarty templating engine.</p>
 
     <h3 style="margin-top: 1.5rem;">Installation</h3>
     <p>To use Smarty templates, install the smarty/smarty package:</p>

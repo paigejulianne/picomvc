@@ -5,7 +5,7 @@
 
 <div class="card">
     <h2>{$message}</h2>
-    <p>This example demonstrates PicoMVC with the <strong>Smarty</strong> templating engine.</p>
+    <p>This example demonstrates NanoMVC with the <strong>Smarty</strong> templating engine.</p>
 
     <h3>Smarty Features Used</h3>
     <ul>

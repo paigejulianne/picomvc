@@ -1,10 +1,10 @@
 <?php
 
 /**
- * PicoMVC Smarty Example Routes
+ * NanoMVC Smarty Example Routes
  */
 
-use PaigeJulianne\PicoMVC\Router;
+use PaigeJulianne\NanoMVC\Router;
 
 require_once __DIR__ . '/controllers/HomeController.php';
 require_once __DIR__ . '/controllers/UsersController.php';
@@ -19,5 +19,5 @@ Router::get('/users/{id}', [UsersController::class, 'show']);
 
 // Custom 404 handler
 Router::setNotFoundHandler(function () {
-    return \PaigeJulianne\PicoMVC\View::make('errors.404', [], 404);
+    return \PaigeJulianne\NanoMVC\View::make('errors.404', [], 404);
 });

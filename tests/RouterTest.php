@@ -1,9 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use PaigeJulianne\PicoMVC\Router;
-use PaigeJulianne\PicoMVC\Request;
-use PaigeJulianne\PicoMVC\Response;
+use PaigeJulianne\NanoMVC\Router;
+use PaigeJulianne\NanoMVC\Request;
+use PaigeJulianne\NanoMVC\Response;
 
 class RouterTest extends TestCase
 {

@@ -1,11 +1,11 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use PaigeJulianne\PicoMVC\Controller;
-use PaigeJulianne\PicoMVC\Request;
-use PaigeJulianne\PicoMVC\Response;
-use PaigeJulianne\PicoMVC\View;
-use PaigeJulianne\PicoMVC\ValidationException;
+use PaigeJulianne\NanoMVC\Controller;
+use PaigeJulianne\NanoMVC\Request;
+use PaigeJulianne\NanoMVC\Response;
+use PaigeJulianne\NanoMVC\View;
+use PaigeJulianne\NanoMVC\ValidationException;
 
 /**
  * Test controller implementation
@@ -64,7 +64,7 @@ class ControllerTest extends TestCase
             '<?php echo "Hello " . $name; ?>'
         );
 
-        View::configure($this->testViewsPath, sys_get_temp_dir() . '/picomvc_test_cache', 'php');
+        View::configure($this->testViewsPath, sys_get_temp_dir() . '/nanomvc_test_cache', 'php');
 
         $_GET = [];
         $_POST = [];

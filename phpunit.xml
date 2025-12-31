@@ -9,13 +9,13 @@
          failOnRisky="true"
          failOnWarning="true">
     <testsuites>
-        <testsuite name="PicoMVC Test Suite">
+        <testsuite name="NanoMVC Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
     <source>
         <include>
-            <file>PicoMVC.php</file>
+            <file>NanoMVC.php</file>
         </include>
     </source>
 </phpunit>

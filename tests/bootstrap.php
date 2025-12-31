@@ -1,11 +1,11 @@
 <?php
 
 /**
- * PHPUnit bootstrap file for PicoMVC tests
+ * PHPUnit bootstrap file for NanoMVC tests
  */
 
 // Load the framework
-require_once __DIR__ . '/../PicoMVC.php';
+require_once __DIR__ . '/../NanoMVC.php';
 
 // Set up test environment
 $_SERVER['REQUEST_METHOD'] = 'GET';

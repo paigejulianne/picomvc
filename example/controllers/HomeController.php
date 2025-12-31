@@ -1,8 +1,8 @@
 <?php
 
-use PaigeJulianne\PicoMVC\Controller;
-use PaigeJulianne\PicoMVC\Request;
-use PaigeJulianne\PicoMVC\Response;
+use PaigeJulianne\NanoMVC\Controller;
+use PaigeJulianne\NanoMVC\Request;
+use PaigeJulianne\NanoMVC\Response;
 
 class HomeController extends Controller
 {
@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function index(Request $request): Response
     {
         return $this->view('home', [
-            'title' => 'Welcome to PicoMVC',
+            'title' => 'Welcome to NanoMVC',
             'message' => 'A lightweight MVC framework for PHP',
         ]);
     }
@@ -23,7 +23,7 @@ class HomeController extends Controller
     public function about(Request $request): Response
     {
         return $this->view('about', [
-            'title' => 'About PicoMVC',
+            'title' => 'About NanoMVC',
         ]);
     }
 }

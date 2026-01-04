@@ -7,7 +7,7 @@ ob_start();
 
 <div class="card">
     <h2>About NanoMVC</h2>
-    <p>NanoMVC is a lightweight Model-View-Controller framework for PHP 8.0+ that follows the same design philosophy as PicoORM:</p>
+    <p>NanoMVC is a lightweight Model-View-Controller framework for PHP 8.0+ that follows the same design philosophy as NanoORM:</p>
 
     <ul>
         <li><strong>Minimal footprint</strong> - Single file core</li>
@@ -24,8 +24,8 @@ ob_start();
         <li><strong>Smarty</strong> - Popular template engine (requires smarty/smarty)</li>
     </ul>
 
-    <h3 style="margin-top: 1.5rem;">Integration with PicoORM</h3>
-    <p>NanoMVC is designed to work seamlessly with PicoORM for database operations. Simply create your model classes and use them in your controllers.</p>
+    <h3 style="margin-top: 1.5rem;">Integration with NanoORM</h3>
+    <p>NanoMVC is designed to work seamlessly with <a href="https://github.com/paigejulianne/nanoorm">NanoORM</a> for database operations. Simply create your model classes and use them in your controllers.</p>
 </div>
 
 <?php $content = ob_get_clean(); ?>

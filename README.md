@@ -11,12 +11,15 @@ by Paige Julianne Sullivan
 
 ## Features
 
-- **Minimal footprint**: Single-file framework (~800 lines)
+- **Enterprise-scale performance**: O(1) route lookup, route caching, middleware caching
 - **Multiple template engines**: PHP, Blade, and Smarty support
-- **Simple routing**: Clean URL routing with parameters
+- **Simple routing**: Clean URL routing with parameters and groups
 - **Zero dependencies**: Only requires PHP 8.0+ (template engines optional)
 - **Built-in validation**: Request validation with helpful error messages
-- **Integrates with PicoORM**: Seamlessly works with PicoORM for database operations
+- **Session management**: Secure sessions with CSRF protection
+- **Rate limiting**: Configurable throttling for API endpoints
+- **Response compression**: Automatic gzip compression
+- **Integrates with NanoORM**: Seamlessly works with [NanoORM](https://github.com/paigejulianne/nanoorm) for database operations
 
 ---
 
@@ -301,6 +304,39 @@ Router::setErrorHandler(function (\Throwable $e, Request $request) {
 });
 ```
 
+### Route Caching (Production)
+
+For large applications, cache compiled routes for faster startup:
+
+```php
+// Generate route cache (run during deployment)
+require 'routes.php';
+Router::cacheRoutes('/path/to/cache/routes.php');
+
+// Load cached routes in production
+if (file_exists('/path/to/cache/routes.php')) {
+    Router::loadCachedRoutes('/path/to/cache/routes.php');
+} else {
+    require 'routes.php';
+}
+```
+
+### Route Statistics
+
+Monitor route performance:
+
+```php
+$stats = Router::getStats();
+// Returns: [
+//   'total_routes' => 150,
+//   'static_routes' => 80,
+//   'dynamic_routes' => 70,
+//   'by_method' => ['GET' => 100, 'POST' => 50],
+//   'cached_middleware' => 5,
+//   'routes_cached' => true
+// ]
+```
+
 ---
 
 ## Controllers
@@ -465,6 +501,24 @@ $response->setContent('Hello')
          ->withHeaders(['X-A' => '1', 'X-B' => '2']);
 ```
 
+### Response Compression
+
+Responses are automatically gzip-compressed when the client supports it:
+
+```php
+// Configure compression (optional)
+Response::configureCompression(
+    threshold: 1024,  // Min bytes to compress (default 1KB)
+    level: 6          // Compression level 0-9 (default 6)
+);
+
+// Disable compression for specific response
+return Response::json($data)->withoutCompression();
+
+// Re-enable compression
+return Response::html($content)->withCompression();
+```
+
 ---
 
 ## Views
@@ -555,19 +609,19 @@ View::share(['key1' => 'value1', 'key2' => 'value2']);
 
 ---
 
-## Integration with PicoORM
+## Integration with NanoORM
 
 ### Creating Models
 
 ```php
-use PaigeJulianne\PicoORM;
+use PaigeJulianne\NanoORM;
 
-class Users extends PicoORM
+class Users extends NanoORM
 {
     // Maps to 'users' table automatically
 }
 
-class BlogPost extends PicoORM
+class BlogPost extends NanoORM
 {
     const TABLE_OVERRIDE = 'blog_posts';
 }
@@ -612,6 +666,175 @@ class UsersController extends Controller
         return $this->redirect('/users');
     }
 }
+```
+
+---
+
+## Session Management
+
+### Basic Usage
+
+```php
+use PaigeJulianne\NanoMVC\Session;
+
+// Set and get values
+Session::set('user_id', 123);
+$userId = Session::get('user_id');
+$name = Session::get('name', 'Guest');  // With default
+
+// Check and remove
+if (Session::has('user_id')) {
+    Session::forget('user_id');
+}
+
+// Get all session data
+$all = Session::all();
+
+// Clear all data
+Session::flush();
+
+// Destroy session completely
+Session::destroy();
+```
+
+### Flash Messages
+
+```php
+// Set flash message (available only on next request)
+Session::flash('success', 'User created successfully!');
+
+// Get flash message (automatically removed)
+$message = Session::getFlash('success');
+```
+
+### CSRF Protection
+
+```php
+// Get CSRF token (for forms)
+$token = Session::csrfToken();
+
+// In your form
+<input type="hidden" name="_token" value="<?= Session::csrfToken() ?>">
+
+// Verify token (done automatically by CsrfMiddleware)
+if (Session::verifyCsrfToken($request->input('_token'))) {
+    // Valid token
+}
+```
+
+### Session Configuration
+
+```php
+Session::configure([
+    'name' => 'my_app_session',
+    'lifetime' => 7200,      // 2 hours
+    'path' => '/',
+    'domain' => '',
+    'secure' => true,        // HTTPS only
+    'httponly' => true,      // No JavaScript access
+    'samesite' => 'Lax',     // CSRF protection
+]);
+```
+
+### Custom Session Storage
+
+```php
+use PaigeJulianne\NanoMVC\FileSessionDriver;
+
+// Use file-based sessions with custom path
+$driver = new FileSessionDriver('/path/to/sessions', 7200);
+Session::setDriver($driver);
+```
+
+---
+
+## Rate Limiting
+
+### Basic Usage
+
+```php
+use PaigeJulianne\NanoMVC\RateLimiter;
+use PaigeJulianne\NanoMVC\FileRateLimitStore;
+
+// Configure storage (required for production)
+RateLimiter::setStore(new FileRateLimitStore('/path/to/storage'));
+
+// Check rate limit
+$key = 'api:' . $userId;
+if (RateLimiter::attempt($key, maxAttempts: 60, decaySeconds: 60)) {
+    // Within limit - process request
+} else {
+    // Rate limited
+    $retryAfter = RateLimiter::availableIn($key);
+}
+
+// Get remaining attempts
+$remaining = RateLimiter::remaining($key, 60);
+
+// Clear rate limit
+RateLimiter::clear($key);
+```
+
+### Throttle Middleware
+
+```php
+use PaigeJulianne\NanoMVC\ThrottleMiddleware;
+
+// 60 requests per minute
+Router::get('/api/users', [ApiController::class, 'index'], [
+    new ThrottleMiddleware(60, 1)
+]);
+
+// 100 requests per hour with custom key
+Router::post('/api/search', [ApiController::class, 'search'], [
+    new ThrottleMiddleware(100, 60, fn($req) => $req->header('X-API-Key'))
+]);
+
+// Apply to route group
+Router::group(['prefix' => 'api', 'middleware' => [new ThrottleMiddleware(120, 1)]], function () {
+    Router::get('/users', [ApiController::class, 'users']);
+    Router::get('/posts', [ApiController::class, 'posts']);
+});
+```
+
+---
+
+## Security Middleware
+
+### CSRF Middleware
+
+```php
+use PaigeJulianne\NanoMVC\CsrfMiddleware;
+
+// Apply to all POST/PUT/DELETE routes
+Router::group(['middleware' => [new CsrfMiddleware()]], function () {
+    Router::post('/users', [UsersController::class, 'store']);
+    Router::delete('/users/{id}', [UsersController::class, 'destroy']);
+});
+
+// Exclude specific paths (e.g., webhooks)
+$csrf = new CsrfMiddleware(['/api/webhooks/*', '/api/stripe/*']);
+```
+
+### CORS Middleware
+
+```php
+use PaigeJulianne\NanoMVC\CorsMiddleware;
+
+// Allow all origins
+Router::group(['prefix' => 'api', 'middleware' => [new CorsMiddleware()]], function () {
+    Router::get('/users', [ApiController::class, 'users']);
+});
+
+// Configure specific origins
+$cors = new CorsMiddleware([
+    'allowed_origins' => ['https://example.com', 'https://app.example.com'],
+    'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE'],
+    'allowed_headers' => ['Content-Type', 'Authorization', 'X-API-Key'],
+    'exposed_headers' => ['X-RateLimit-Remaining'],
+    'max_age' => 86400,
+    'supports_credentials' => true,
+]);
 ```
 
 ---
@@ -815,6 +1038,64 @@ composer test
 | `isDebug()` | Check debug mode |
 | `setDebug($debug)` | Set debug mode |
 | `basePath($path)` | Get base path |
+
+### Session
+
+| Method | Description |
+|--------|-------------|
+| `start()` | Start the session |
+| `get($key, $default)` | Get session value |
+| `set($key, $value)` | Set session value |
+| `has($key)` | Check if key exists |
+| `forget($key)` | Remove session value |
+| `all()` | Get all session data |
+| `flush()` | Clear all session data |
+| `destroy()` | Destroy session completely |
+| `flash($key, $value)` | Flash value for next request |
+| `getFlash($key, $default)` | Get and remove flash value |
+| `csrfToken()` | Get CSRF token |
+| `verifyCsrfToken($token)` | Verify CSRF token |
+| `configure($config)` | Configure session settings |
+| `setDriver($driver)` | Set custom session driver |
+| `regenerate()` | Regenerate session ID |
+
+### RateLimiter
+
+| Method | Description |
+|--------|-------------|
+| `attempt($key, $max, $decay)` | Check/increment rate limit |
+| `remaining($key, $max)` | Get remaining attempts |
+| `availableIn($key)` | Seconds until limit resets |
+| `clear($key)` | Clear rate limit for key |
+| `hits($key)` | Get current hit count |
+| `setStore($store)` | Set storage backend |
+
+### Router (Additional Methods)
+
+| Method | Description |
+|--------|-------------|
+| `cacheRoutes($file)` | Cache routes to file |
+| `loadCachedRoutes($file)` | Load routes from cache |
+| `isRouteCached()` | Check if routes are cached |
+| `getStats()` | Get route statistics |
+| `clearMiddlewareCache()` | Clear middleware cache |
+
+### Response (Additional Methods)
+
+| Method | Description |
+|--------|-------------|
+| `withCompression()` | Enable gzip compression |
+| `withoutCompression()` | Disable gzip compression |
+| `configureCompression($threshold, $level)` | Configure compression settings |
+
+### Request (Additional Methods)
+
+| Method | Description |
+|--------|-------------|
+| `getContentStream()` | Get stream handle for body |
+| `readContentChunked($callback, $size)` | Read body in chunks |
+| `setMaxBodySize($bytes)` | Set max request body size |
+| `getMaxBodySize()` | Get max request body size |
 
 ---
 

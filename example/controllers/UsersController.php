@@ -12,7 +12,7 @@ class UsersController extends Controller
      */
     public function index(Request $request): Response
     {
-        // In a real app, you'd fetch from database using PicoORM:
+        // In a real app, you'd fetch from database using NanoORM:
         // $users = Users::getAllObjects();
 
         $users = [

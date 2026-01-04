@@ -1,14 +1,14 @@
 <?php
 
-use PaigeJulianne\PicoORM;
+use PaigeJulianne\NanoORM;
 
 /**
  * Users Model
  *
  * This class maps to the 'users' table in your database.
- * Extends PicoORM for all database operations.
+ * Extends NanoORM for all database operations.
  */
-class Users extends PicoORM
+class Users extends NanoORM
 {
     // Optionally override the table name
     // const TABLE_OVERRIDE = 'my_users';

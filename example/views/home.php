@@ -7,7 +7,7 @@ ob_start();
 
 <div class="card">
     <h2><?= htmlspecialchars($message) ?></h2>
-    <p>NanoMVC is a minimal MVC framework designed with the same simplicity as PicoORM.</p>
+    <p>NanoMVC is a minimal MVC framework designed with the same simplicity as NanoORM.</p>
 
     <h3>Features</h3>
     <ul>
@@ -16,7 +16,7 @@ ob_start();
         <li>Multiple template engine support (PHP, Blade, Smarty)</li>
         <li>Built-in validation</li>
         <li>Zero configuration required</li>
-        <li>Integrates seamlessly with PicoORM</li>
+        <li>Integrates seamlessly with NanoORM</li>
     </ul>
 
     <p style="margin-top: 1rem;">

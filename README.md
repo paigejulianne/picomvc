@@ -2,7 +2,7 @@
 
 A lightweight MVC framework for PHP 8.0+ with support for Blade, Smarty, and Twig templates.
 
-**Version 1.0.0** | [Changelog](CHANGELOG.md) | [License: GPL-3.0](LICENSE)
+**Version 1.0.1** | [Changelog](CHANGELOG.md) | [License: GPL-3.0](LICENSE)
 
 by Paige Julianne Sullivan
 [paigejulianne.com](https://paigejulianne.com) | [GitHub](https://github.com/paigejulianne/nanomvc)

@@ -1,6 +1,6 @@
 # Views and Templates
 
-NanoMVC supports multiple template engines: native PHP, Laravel Blade, and Smarty.
+NanoMVC supports multiple template engines: native PHP, Laravel Blade, Smarty, and Twig.
 
 ## Table of Contents
 
@@ -8,6 +8,7 @@ NanoMVC supports multiple template engines: native PHP, Laravel Blade, and Smart
 - [PHP Templates](#php-templates)
 - [Blade Templates](#blade-templates)
 - [Smarty Templates](#smarty-templates)
+- [Twig Templates](#twig-templates)
 - [Passing Data to Views](#passing-data-to-views)
 - [Layouts and Inheritance](#layouts-and-inheritance)
 - [Best Practices](#best-practices)
@@ -20,7 +21,7 @@ NanoMVC supports multiple template engines: native PHP, Laravel Blade, and Smart
 
 ```ini
 [views]
-engine=php       ; php, blade, or smarty
+engine=php       ; php, blade, smarty, or twig
 path=views       ; Views directory (relative to app root)
 cache=cache      ; Cache directory for compiled templates
 ```
@@ -49,6 +50,13 @@ View::configure(
     viewsPath: __DIR__ . '/views',
     cachePath: __DIR__ . '/cache/smarty',
     engine: 'smarty'
+);
+
+// Twig templates
+View::configure(
+    viewsPath: __DIR__ . '/views',
+    cachePath: __DIR__ . '/cache/twig',
+    engine: 'twig'
 );
 ```
 
@@ -431,6 +439,167 @@ composer require smarty/smarty
 
 ---
 
+## Twig Templates
+
+Twig provides a modern, flexible template syntax with automatic escaping.
+
+### Installation
+
+```bash
+composer require twig/twig
+```
+
+### Basic Syntax
+
+```twig
+{# views/home.twig #}
+{% extends "layout.twig" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1>{{ heading }}</h1>
+    <p>{{ message }}</p>
+{% endblock %}
+```
+
+### Layout Template
+
+```twig
+{# views/layout.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My App{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        {% block footer %}&copy; {{ "now"|date("Y") }} My App{% endblock %}
+    </footer>
+</body>
+</html>
+```
+
+### Variables and Filters
+
+```twig
+{# Basic output (auto-escaped) #}
+<p>{{ name }}</p>
+
+{# Raw output (dangerous - only for trusted HTML) #}
+<div>{{ trustedHtml|raw }}</div>
+
+{# Default value #}
+<p>{{ name|default("Guest") }}</p>
+
+{# Chained filters #}
+<p>{{ title|escape|upper }}</p>
+
+{# Common filters #}
+{{ text|truncate(50) }}
+{{ price|number_format(2) }}
+{{ date|date("F j, Y") }}
+{{ name|capitalize }}
+{{ text|striptags }}
+{{ text|length }}
+```
+
+### Conditionals
+
+```twig
+{% if users is empty %}
+    <p>No users found.</p>
+{% elseif users|length == 1 %}
+    <p>One user found.</p>
+{% else %}
+    <p>{{ users|length }} users found.</p>
+{% endif %}
+
+{# Ternary #}
+{{ isAdmin ? 'Admin' : 'User' }}
+
+{# Null coalescing #}
+{{ user.name ?? 'Anonymous' }}
+
+{# Defined check #}
+{% if user is defined %}
+    <p>User exists</p>
+{% endif %}
+```
+
+### Loops
+
+```twig
+{% for user in users %}
+    <p>{{ user.name }}</p>
+{% else %}
+    <p>No users found.</p>
+{% endfor %}
+
+{# With index #}
+{% for user in users %}
+    <p>{{ loop.index }}. {{ user.name }}</p>
+{% endfor %}
+
+{# Loop properties #}
+{% for user in users %}
+    {% if loop.first %}<ul>{% endif %}
+    <li>{{ user.name }}</li>
+    {% if loop.last %}</ul>{% endif %}
+{% endfor %}
+
+{# Available loop variables #}
+{# loop.index - 1-indexed iteration #}
+{# loop.index0 - 0-indexed iteration #}
+{# loop.first - true if first iteration #}
+{# loop.last - true if last iteration #}
+{# loop.length - total number of items #}
+```
+
+### Including Templates
+
+```twig
+{# Simple include #}
+{% include "partials/header.twig" %}
+
+{# Include with variables #}
+{% include "partials/user-card.twig" with {'user': currentUser} %}
+
+{# Include if exists #}
+{% include "partials/optional.twig" ignore missing %}
+
+{# Include with only specific variables #}
+{% include "partials/sidebar.twig" with {'items': menuItems} only %}
+```
+
+### Macros (Reusable Components)
+
+```twig
+{# Define macro #}
+{% macro input(name, value, type = "text") %}
+    <input type="{{ type }}" name="{{ name }}" value="{{ value }}">
+{% endmacro %}
+
+{# Import and use #}
+{% import _self as forms %}
+{{ forms.input('email', '', 'email') }}
+
+{# From external file #}
+{% import "macros/forms.twig" as forms %}
+{{ forms.input('username', user.name) }}
+```
+
+---
+
 ## Passing Data to Views
 
 ### From Controller
@@ -479,6 +648,7 @@ View::share('currentYear', date('Y'));
 // PHP: <?= $appName ?>
 // Blade: {{ $appName }}
 // Smarty: {$appName}
+// Twig: {{ appName }}
 ```
 
 ---
@@ -618,6 +788,50 @@ ob_start();
 {/block}
 ```
 
+### Twig Inheritance
+
+```twig
+{# views/layouts/app.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}App{% endblock %}</title>
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    {% include "partials/nav.twig" %}
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include "partials/footer.twig" %}
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+
+{# views/pages/dashboard.twig #}
+{% extends "layouts/app.twig" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block styles %}
+<style>.dashboard { padding: 20px; }</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1>Dashboard</h1>
+    <p>Welcome, {{ user.name }}</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>console.log('Dashboard loaded');</script>
+{% endblock %}
+```
+
 ---
 
 ## Best Practices
@@ -633,6 +847,9 @@ ob_start();
 
 // Smarty - use escape modifier
 {$userInput|escape}
+
+// Twig - automatic escaping with {{ }}
+{{ userInput }}
 ```
 
 ### 2. Use Layouts for Consistency

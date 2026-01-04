@@ -1,17 +1,18 @@
 {
   "name": "paigejulianne/nanomvc",
   "type": "library",
-  "description": "NanoMVC: a lightweight MVC framework with Blade and Smarty template support",
+  "description": "NanoMVC: a lightweight MVC framework with Blade, Smarty, and Twig template support",
   "keywords": [
     "mvc",
     "framework",
     "lightweight",
     "blade",
     "smarty",
+    "twig",
     "templating",
     "router"
   ],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "GPL-3.0-or-later",
   "homepage": "https://github.com/paigejulianne/nanomvc",
   "authors": [
@@ -23,14 +24,16 @@
   ],
   "require": {
     "php": ">=8.0",
-    "paigejulianne/nanoorm": "^2.0"
+    "paigejulianne/nanoorm": "^1.0 || ^2.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.0 || ^11.0"
+    "phpunit/phpunit": "^10.0 || ^11.0",
+    "twig/twig": "^3.0"
   },
   "suggest": {
     "jenssegers/blade": "Required for Blade templating support (composer require jenssegers/blade)",
-    "smarty/smarty": "Required for Smarty templating support (composer require smarty/smarty)"
+    "smarty/smarty": "Required for Smarty templating support (composer require smarty/smarty)",
+    "twig/twig": "Required for Twig templating support (composer require twig/twig)"
   },
   "autoload": {
     "files": [

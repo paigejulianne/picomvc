@@ -5,13 +5,13 @@ namespace PaigeJulianne\NanoMVC;
 /**
  * Package NanoMVC
  *
- * A lightweight MVC framework for PHP 8.0+ with support for Blade and Smarty templates.
+ * A lightweight MVC framework for PHP 8.0+ with support for Blade, Smarty, and Twig templates.
  *
  * @author    Paige Julianne Sullivan <paige@paigejulianne.com> https://paigejulianne.com
  * @copyright 2024-present Paige Julianne Sullivan
  * @license   GPL-3.0-or-later
  * @link      https://github.com/paigejulianne/nanomvc
- * @version   1.0.0
+ * @version   1.0.1
  */
 
 // ============================================================================
@@ -1365,6 +1365,100 @@ class SmartyAdapter implements TemplateAdapter
 }
 
 /**
+ * Twig template adapter
+ */
+class TwigAdapter implements TemplateAdapter
+{
+    private string $viewsPath;
+    private string $cachePath;
+    private ?\Twig\Environment $twig = null;
+
+    public function __construct(string $viewsPath, string $cachePath)
+    {
+        $this->viewsPath = rtrim($viewsPath, '/');
+        $this->cachePath = rtrim($cachePath, '/');
+        $this->initTwig();
+    }
+
+    private function initTwig(): void
+    {
+        if (!class_exists('Twig\Environment')) {
+            throw new \RuntimeException(
+                'Twig templating requires twig/twig package. ' .
+                'Install with: composer require twig/twig'
+            );
+        }
+
+        // Create cache directory if it doesn't exist
+        $twigCache = $this->cachePath . '/twig';
+        if (!is_dir($twigCache)) {
+            mkdir($twigCache, 0755, true);
+        }
+
+        $loader = new \Twig\Loader\FilesystemLoader($this->viewsPath);
+        $this->twig = new \Twig\Environment($loader, [
+            'cache' => $twigCache,
+            'auto_reload' => true,
+            'strict_variables' => false,
+            'autoescape' => 'html',
+        ]);
+    }
+
+    public function render(string $template, array $data = []): string
+    {
+        // Convert dot notation to path with .twig extension
+        $templateFile = str_replace('.', '/', $template) . '.twig';
+
+        return $this->twig->render($templateFile, $data);
+    }
+
+    public static function isAvailable(): bool
+    {
+        return class_exists('Twig\Environment');
+    }
+
+    /**
+     * Get the underlying Twig Environment instance for advanced configuration
+     */
+    public function getTwig(): \Twig\Environment
+    {
+        return $this->twig;
+    }
+
+    /**
+     * Add a custom Twig extension
+     */
+    public function addExtension(\Twig\Extension\ExtensionInterface $extension): void
+    {
+        $this->twig->addExtension($extension);
+    }
+
+    /**
+     * Add a custom Twig filter
+     */
+    public function addFilter(\Twig\TwigFilter $filter): void
+    {
+        $this->twig->addFilter($filter);
+    }
+
+    /**
+     * Add a custom Twig function
+     */
+    public function addFunction(\Twig\TwigFunction $function): void
+    {
+        $this->twig->addFunction($function);
+    }
+
+    /**
+     * Add a global variable available in all templates
+     */
+    public function addGlobal(string $name, mixed $value): void
+    {
+        $this->twig->addGlobal($name, $value);
+    }
+}
+
+/**
  * View manager - handles template rendering with multiple engine support
  */
 class View
@@ -1409,6 +1503,7 @@ class View
         self::$adapter = match (self::$engine) {
             'blade' => new BladeAdapter(self::$viewsPath, self::$cachePath),
             'smarty' => new SmartyAdapter(self::$viewsPath, self::$cachePath),
+            'twig' => new TwigAdapter(self::$viewsPath, self::$cachePath),
             default => new PhpAdapter(self::$viewsPath),
         };
 
@@ -1444,6 +1539,7 @@ class View
         return match (strtolower($engine)) {
             'blade' => BladeAdapter::isAvailable(),
             'smarty' => SmartyAdapter::isAvailable(),
+            'twig' => TwigAdapter::isAvailable(),
             'php' => true,
             default => false,
         };

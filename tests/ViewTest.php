@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use PaigeJulianne\NanoMVC\View;
 use PaigeJulianne\NanoMVC\Response;
 use PaigeJulianne\NanoMVC\PhpAdapter;
+use PaigeJulianne\NanoMVC\TwigAdapter;
 
 class ViewTest extends TestCase
 {
@@ -122,5 +123,93 @@ class ViewTest extends TestCase
     public function testPhpAdapterIsAvailable(): void
     {
         $this->assertTrue(PhpAdapter::isAvailable());
+    }
+
+    public function testEngineAvailableForTwig(): void
+    {
+        // Twig availability depends on whether the package is installed
+        $expected = class_exists('Twig\Environment');
+        $this->assertEquals($expected, View::engineAvailable('twig'));
+    }
+
+    public function testTwigAdapterIsAvailable(): void
+    {
+        // TwigAdapter::isAvailable() depends on whether twig/twig is installed
+        $expected = class_exists('Twig\Environment');
+        $this->assertEquals($expected, TwigAdapter::isAvailable());
+    }
+
+    public function testTwigAdapterRender(): void
+    {
+        if (!class_exists('Twig\Environment')) {
+            $this->markTestSkipped('Twig is not installed');
+        }
+
+        // Create Twig test view
+        file_put_contents(
+            $this->testViewsPath . '/twig_test.twig',
+            'Hello {{ name }}'
+        );
+
+        $cachePath = sys_get_temp_dir() . '/nanomvc_twig_test_cache';
+        $adapter = new TwigAdapter($this->testViewsPath, $cachePath);
+        $result = $adapter->render('twig_test', ['name' => 'World']);
+
+        $this->assertEquals('Hello World', $result);
+    }
+
+    public function testTwigAdapterWithInheritance(): void
+    {
+        if (!class_exists('Twig\Environment')) {
+            $this->markTestSkipped('Twig is not installed');
+        }
+
+        // Create base layout
+        file_put_contents(
+            $this->testViewsPath . '/base.twig',
+            '<html>{% block content %}{% endblock %}</html>'
+        );
+
+        // Create child template
+        file_put_contents(
+            $this->testViewsPath . '/child.twig',
+            '{% extends "base.twig" %}{% block content %}Hello {{ name }}{% endblock %}'
+        );
+
+        $cachePath = sys_get_temp_dir() . '/nanomvc_twig_test_cache';
+        $adapter = new TwigAdapter($this->testViewsPath, $cachePath);
+        $result = $adapter->render('child', ['name' => 'Twig']);
+
+        $this->assertEquals('<html>Hello Twig</html>', $result);
+    }
+
+    public function testTwigAdapterAutoEscapes(): void
+    {
+        if (!class_exists('Twig\Environment')) {
+            $this->markTestSkipped('Twig is not installed');
+        }
+
+        file_put_contents(
+            $this->testViewsPath . '/escape_test.twig',
+            '{{ content }}'
+        );
+
+        $cachePath = sys_get_temp_dir() . '/nanomvc_twig_test_cache';
+        $adapter = new TwigAdapter($this->testViewsPath, $cachePath);
+        $result = $adapter->render('escape_test', ['content' => '<script>alert("xss")</script>']);
+
+        $this->assertEquals('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;', $result);
+    }
+
+    public function testTwigAdapterGetTwig(): void
+    {
+        if (!class_exists('Twig\Environment')) {
+            $this->markTestSkipped('Twig is not installed');
+        }
+
+        $cachePath = sys_get_temp_dir() . '/nanomvc_twig_test_cache';
+        $adapter = new TwigAdapter($this->testViewsPath, $cachePath);
+
+        $this->assertInstanceOf(\Twig\Environment::class, $adapter->getTwig());
     }
 }

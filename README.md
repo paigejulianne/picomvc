@@ -1,6 +1,6 @@
 # NanoMVC
 
-A lightweight MVC framework for PHP 8.0+ with support for Blade and Smarty templates.
+A lightweight MVC framework for PHP 8.0+ with support for Blade, Smarty, and Twig templates.
 
 **Version 1.0.0** | [Changelog](CHANGELOG.md) | [License: GPL-3.0](LICENSE)
 
@@ -12,7 +12,7 @@ by Paige Julianne Sullivan
 ## Features
 
 - **Enterprise-scale performance**: O(1) route lookup, route caching, middleware caching
-- **Multiple template engines**: PHP, Blade, and Smarty support
+- **Multiple template engines**: PHP, Blade, Smarty, and Twig support
 - **Simple routing**: Clean URL routing with parameters and groups
 - **Zero dependencies**: Only requires PHP 8.0+ (template engines optional)
 - **Built-in validation**: Request validation with helpful error messages
@@ -53,13 +53,14 @@ require_once 'NanoMVC.php';
 
 ## Examples
 
-NanoMVC includes three example applications demonstrating each template engine:
+NanoMVC includes four example applications demonstrating each template engine:
 
 | Example | Template Engine | Directory |
 |---------|-----------------|-----------|
 | PHP (Native) | Native PHP | `example/` |
 | Blade | Laravel Blade | `example-blade/` |
 | Smarty | Smarty | `example-smarty/` |
+| Twig | Twig | `example-twig/` |
 
 ### Running the Examples
 
@@ -78,16 +79,22 @@ NanoMVC includes three example applications demonstrating each template engine:
    composer require smarty/smarty
    ```
 
-4. **Set file permissions:**
+4. **For Twig example, also install:**
+   ```bash
+   composer require twig/twig
+   ```
+
+5. **Set file permissions:**
    ```bash
    chmod 644 example*/.htaccess
    chmod 755 example*/cache
    ```
 
-5. **Access in your browser:**
+6. **Access in your browser:**
    - PHP: `http://localhost/path/to/nanomvc/example/`
    - Blade: `http://localhost/path/to/nanomvc/example-blade/`
    - Smarty: `http://localhost/path/to/nanomvc/example-smarty/`
+   - Twig: `http://localhost/path/to/nanomvc/example-twig/`
 
 > **Note:** Ensure Apache `mod_rewrite` is enabled and `AllowOverride All` is set for your directory. See [Apache Configuration](#apache-configuration) for details.
 
@@ -185,7 +192,7 @@ debug=true
 name=My Application
 
 [views]
-engine=php      # php, blade, or smarty
+engine=php      # php, blade, smarty, or twig
 path=views
 cache=cache
 
@@ -551,6 +558,16 @@ composer require smarty/smarty
 View::configure('/path/to/views', '/path/to/cache', 'smarty');
 ```
 
+**Twig** - Requires `twig/twig`:
+
+```bash
+composer require twig/twig
+```
+
+```php
+View::configure('/path/to/views', '/path/to/cache', 'twig');
+```
+
 ### Rendering Views
 
 ```php
@@ -604,6 +621,17 @@ View::share(['key1' => 'value1', 'key2' => 'value2']);
 {foreach $users as $user}
     <li>{$user->name}</li>
 {/foreach}
+</ul>
+```
+
+**Twig Template (`views/users/index.twig`):**
+
+```twig
+<h1>{{ title }}</h1>
+<ul>
+{% for user in users %}
+    <li>{{ user.name }}</li>
+{% endfor %}
 </ul>
 ```
 

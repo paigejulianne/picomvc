@@ -1,0 +1,24 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+
+<div class="card">
+    <h2>{{ message }}</h2>
+    <p>This example demonstrates NanoMVC with the <strong>Twig</strong> templating engine.</p>
+
+    <h3>Twig Features Used</h3>
+    <ul>
+        <li><code>{% verbatim %}{% extends %}{% endverbatim %}</code> - Template inheritance</li>
+        <li><code>{% verbatim %}{% block %}{% endverbatim %}</code> - Content blocks</li>
+        <li><code>{% verbatim %}{{ variable }}{% endverbatim %}</code> - Variable output (auto-escaped)</li>
+        <li><code>{% verbatim %}{% for %}{% endverbatim %}</code> - Loops</li>
+        <li><code>{% verbatim %}{% if %}{% endverbatim %}</code> / <code>{% verbatim %}{% else %}{% endverbatim %}</code> - Conditionals</li>
+        <li>Filters like <code>|escape</code>, <code>|date</code>, and <code>|default</code></li>
+    </ul>
+
+    <p style="margin-top: 1rem;">
+        <a href="{{ baseUrl }}/users" class="btn">View Users</a>
+    </p>
+</div>
+{% endblock %}

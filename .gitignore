@@ -35,6 +35,7 @@ Thumbs.db
 /example/cache/
 /example-blade/cache/
 /example-smarty/cache/
+/example-twig/cache/
 
 # Build artifacts
 *.phar
